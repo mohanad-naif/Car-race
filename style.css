@@ -1,0 +1,509 @@
+/* ============================================
+   style.css — لعبة قيادة في الشارع
+   المطوّر: مهند نايف سيف | الإصدار 1.01
+   ============================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #000;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+#canvas-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+canvas { display: block; }
+
+/* ==================== */
+/*   HUD واجهة اللاعب   */
+/* ==================== */
+#hud {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* عداد السرعة */
+#speedometer {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  background: rgba(0,0,0,0.65);
+  border: 2px solid rgba(255,220,50,0.7);
+  border-radius: 16px;
+  padding: 14px 22px;
+  color: #fff;
+  text-align: center;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 24px rgba(255,200,0,0.18);
+}
+#speedometer .speed-num {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #FFD700;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+#speedometer .speed-label {
+  font-size: 0.72rem;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+#speedometer .gear {
+  margin-top: 6px;
+  font-size: 1rem;
+  color: #4fc3f7;
+  font-weight: bold;
+}
+
+/* شريط التسارع والفرامل */
+#speed-bar-wrap {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bar-label {
+  color: #aaa;
+  font-size: 0.7rem;
+  width: 50px;
+  text-align: right;
+}
+.bar-bg {
+  width: 120px;
+  height: 8px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.1s;
+}
+#throttle-fill { background: linear-gradient(90deg, #43e97b, #38f9d7); }
+#brake-fill    { background: linear-gradient(90deg, #f7971e, #fd3838); }
+
+/* مؤشر الاتجاه */
+#minimap {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0,0,0,0.55);
+  border: 1.5px solid rgba(255,220,50,0.4);
+  border-radius: 12px;
+  padding: 8px 14px;
+  color: #FFD700;
+  font-size: 0.8rem;
+  backdrop-filter: blur(4px);
+}
+
+/* عداد المسافة */
+#distance-counter {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.55);
+  border: 1.5px solid rgba(80,200,255,0.4);
+  border-radius: 12px;
+  padding: 8px 18px;
+  color: #fff;
+  font-size: 0.82rem;
+  backdrop-filter: blur(4px);
+  text-align: center;
+}
+#distance-counter span {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #4fc3f7;
+}
+
+/* تحذير خروج عن الطريق */
+#off-road-warn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ff4444;
+  font-size: 1.4rem;
+  font-weight: 900;
+  background: rgba(255,0,0,0.15);
+  border: 2px solid #ff4444;
+  border-radius: 12px;
+  padding: 10px 28px;
+  display: none;
+  animation: blink 0.5s infinite;
+}
+
+/* زر القائمة */
+#menu-btn {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.55);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  color: #fff;
+  padding: 6px 18px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  pointer-events: all;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
+}
+#menu-btn:hover { background: rgba(255,255,255,0.12); }
+
+/* ==================== */
+/*   شاشة البداية       */
+/* ==================== */
+#start-screen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #0a0a1a 0%, #0d1b2a 60%, #162032 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  color: #fff;
+  transition: opacity 0.7s;
+}
+#start-screen h1 {
+  font-size: 3.2rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #FFD700, #FF6B35, #FFD700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+#start-screen p {
+  color: #8899aa;
+  margin-bottom: 38px;
+  font-size: 1.05rem;
+}
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 28px;
+  margin-bottom: 38px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 20px 30px;
+}
+.ctrl-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+.key {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 6px;
+  padding: 3px 9px;
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: #FFD700;
+  min-width: 34px;
+  text-align: center;
+}
+#start-btn {
+  background: linear-gradient(135deg, #FFD700, #FF6B35);
+  color: #000;
+  border: none;
+  padding: 15px 48px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  border-radius: 50px;
+  cursor: pointer;
+  pointer-events: all;
+  box-shadow: 0 4px 24px rgba(255,160,0,0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+#start-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 32px rgba(255,160,0,0.5);
+}
+
+/* ==================== */
+/*   قائمة الإيقاف      */
+/* ==================== */
+#pause-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  backdrop-filter: blur(6px);
+}
+#pause-screen.active { display: flex; }
+
+.pause-box {
+  background: linear-gradient(160deg, #0d1b2a, #162032);
+  border: 1.5px solid rgba(255,220,50,0.25);
+  border-radius: 22px;
+  padding: 38px 52px;
+  text-align: center;
+  color: #fff;
+  min-width: 300px;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+}
+.pause-box h2 {
+  font-size: 1.9rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #FFD700, #FF6B35);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 28px;
+}
+.pause-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pmenu-btn {
+  padding: 13px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+  width: 100%;
+}
+.pmenu-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 18px rgba(0,0,0,0.3); }
+#pm-resume  { background: linear-gradient(135deg, #43e97b, #1a9e50); color: #fff; }
+#pm-restart { background: linear-gradient(135deg, #4fc3f7, #1565c0); color: #fff; }
+#pm-howto   { background: linear-gradient(135deg, #a78bfa, #6d28d9); color: #fff; }
+#pm-about   { background: rgba(255,255,255,0.08); color: #ccc; border: 1px solid rgba(255,255,255,0.12); }
+#pm-exit    { background: linear-gradient(135deg, #fd3838, #961010); color: #fff; }
+
+/* ==================== */
+/*   شاشة من نحن        */
+/* ==================== */
+#about-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 95;
+  backdrop-filter: blur(8px);
+}
+#about-screen.active { display: flex; }
+
+.about-box {
+  background: linear-gradient(160deg, #0d1b2a, #162032);
+  border: 1.5px solid rgba(80,200,255,0.3);
+  border-radius: 22px;
+  padding: 38px 48px;
+  text-align: center;
+  color: #fff;
+  max-width: 420px;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+}
+.about-box h2 {
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: #4fc3f7;
+  margin-bottom: 18px;
+}
+.about-box p {
+  color: #aac;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+.about-box .version {
+  margin-top: 16px;
+  font-size: 0.78rem;
+  color: #556;
+  letter-spacing: 1px;
+}
+#about-back {
+  margin-top: 24px;
+  padding: 11px 36px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: #ccc;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+#about-back:hover { background: rgba(255,255,255,0.18); }
+
+/* ==================== */
+/*   شاشة طريقة اللعب   */
+/* ==================== */
+#howto-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 95;
+  backdrop-filter: blur(8px);
+}
+#howto-keys {
+  margin: 14px 0;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: right;
+  line-height: 2.2;
+  font-size: 0.88rem;
+  color: #ccc;
+}
+#howto-keys span { color: #FFD700; }
+#howto-back {
+  margin-top: 20px;
+  padding: 11px 36px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(167,139,250,0.2);
+  color: #a78bfa;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ==================== */
+/*   جوي ستيك الجوال    */
+/* ==================== */
+#mobile-controls {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 200px;
+  pointer-events: none;
+  z-index: 20;
+  display: none;
+}
+#joystick-zone {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 130px;
+  height: 130px;
+  pointer-events: all;
+}
+#joystick-base {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  border: 2.5px solid rgba(255,220,50,0.5);
+  position: relative;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 20px rgba(255,200,0,0.15);
+}
+#joystick-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FFD700, #FF6B35);
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+#action-buttons {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: all;
+}
+.action-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.action-btn:active, .action-btn.pressed {
+  transform: scale(0.91);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+#btn-gas   { background: radial-gradient(circle at 35% 35%, #43e97b, #1a9e50); }
+#btn-brake { background: radial-gradient(circle at 35% 35%, #fd5c5c, #b81414); }
+#btn-handbrake {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 40px;
+  border-radius: 20px;
+  background: rgba(80,80,120,0.8);
+  border: 2px solid rgba(150,150,255,0.5);
+  color: #aaaaff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  pointer-events: all;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: transform 0.08s;
+}
+#btn-handbrake:active, #btn-handbrake.pressed {
+  transform: translateX(-50%) scale(0.93);
+}
+
+/* ==================== */
+/*   Animations         */
+/* ==================== */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ==================== */
+/*   الجوال (Mobile)    */
+/* ==================== */
+@media (max-width: 768px), (pointer: coarse) {
+  #mobile-controls { display: block; }
+  #speed-bar-wrap  { display: none; }
+  #speedometer     { bottom: 210px; right: 16px; padding: 10px 16px; }
+  #speedometer .speed-num { font-size: 2rem; }
+  #minimap         { top: 12px; left: 12px; font-size: 0.72rem; }
+  #distance-counter{ top: 12px; right: 12px; font-size: 0.72rem; }
+}
