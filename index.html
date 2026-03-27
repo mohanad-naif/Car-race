@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🏎️ لعبة قيادة ثلاثية الأبعاد</title>
+  صنع من Claude ai
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -51,63 +52,7 @@
       letter-spacing: -1px;
     }
 
-    #speedometer .speed-label {
-      font-size: 0.72rem;
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-top: 2px;
-    }
-
-    #speedometer .gear {
-      margin-top: 6px;
-      font-size: 1rem;
-      color: #4fc3f7;
-      font-weight: bold;
-    }
-
-    /* شريط السرعة */
-    #speed-bar-wrap {
-      position: absolute;
-      bottom: 30px;
-      left: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .bar-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .bar-label {
-      color: #aaa;
-      font-size: 0.7rem;
-      width: 50px;
-      text-align: right;
-    }
-
-    .bar-bg {
-      width: 120px;
-      height: 8px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      height: 100%;
-      border-radius: 4px;
-      transition: width 0.1s;
-    }
-
-    #throttle-fill { background: linear-gradient(90deg, #43e97b, #38f9d7); }
-    #brake-fill    { background: linear-gradient(90deg, #f7971e, #fd3838); }
-
-    /* شاشة البداية */
-    #start-screen {
+    #
       position: fixed;
       inset: 0;
       background: linear-gradient(135deg, #0a0a1a 0%, #0d1b2a 60%, #162032 100%);
@@ -356,104 +301,7 @@
       border: none;
       font-size: 1rem;
       font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.12s, box-shadow 0.12s;
-      width: 100%;
-    }
-    .pmenu-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 18px rgba(0,0,0,0.3); }
-
-    #pm-resume { background: linear-gradient(135deg, #43e97b, #1a9e50); color: #fff; }
-    #pm-restart { background: linear-gradient(135deg, #4fc3f7, #1565c0); color: #fff; }
-    #pm-howto  { background: linear-gradient(135deg, #a78bfa, #6d28d9); color: #fff; }
-    #pm-about  { background: rgba(255,255,255,0.08); color: #ccc; border: 1px solid rgba(255,255,255,0.12); }
-    #pm-exit   { background: linear-gradient(135deg, #fd3838, #961010); color: #fff; }
-
-    /* شاشة "من نحن" */
-    #about-screen {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 95;
-      backdrop-filter: blur(8px);
-    }
-    #about-screen.active { display: flex; }
-
-    .about-box {
-      background: linear-gradient(160deg, #0d1b2a, #162032);
-      border: 1.5px solid rgba(80,200,255,0.3);
-      border-radius: 22px;
-      padding: 38px 48px;
-      text-align: center;
-      color: #fff;
-      max-width: 420px;
-      box-shadow: 0 8px 48px rgba(0,0,0,0.6);
-    }
-    .about-box h2 {
-      font-size: 1.7rem;
-      font-weight: 900;
-      color: #4fc3f7;
-      margin-bottom: 18px;
-    }
-    .about-box p {
-      color: #aac; line-height: 1.7; font-size: 0.95rem; margin-bottom: 10px;
-    }
-    .about-box .version {
-      margin-top: 16px; font-size: 0.78rem; color: #556; letter-spacing: 1px;
-    }
-    #about-back {
-      margin-top: 24px;
-      padding: 11px 36px;
-      border-radius: 10px;
-      border: none;
-      background: rgba(255,255,255,0.1);
-      color: #ccc;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    #about-back:hover { background: rgba(255,255,255,0.18); }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    /* ===================== */
-    /*   جوي ستيك الجوال     */
-    /* ===================== */
-    #mobile-controls {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 200px;
-      pointer-events: none;
-      z-index: 20;
-      display: none; /* مخفي على الكمبيوتر */
-    }
-
-    /* joystick يسار - للتوجيه */
-    #joystick-zone {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      width: 130px;
-      height: 130px;
-      pointer-events: all;
-    }
-
-    #joystick-base {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.45);
-      border: 2.5px solid rgba(255,220,50,0.5);
-      position: relative;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 0 20px rgba(255,200,0,0.15);
+            box-shadow: 0 0 20px rgba(255,200,0,0.15);
     }
 
     #joystick-thumb {
